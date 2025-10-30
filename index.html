@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revision Test - Master Your Exam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        /* Custom styles for the Inter font and smooth scrolling */
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+            background-color: #f7f9fb; /* Slightly off-white background */
+        }
+        .quiz-option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+        }
+        .loading-spinner {
+            border-top-color: #1870b8;
+            -webkit-animation: spin 1s linear infinite;
+            animation: spin 1s linear infinite;
+        }
+        @-webkit-keyframes spin {
+            0% { -webkit-transform: rotate(0deg); }
+            100% { -webkit-transform: rotate(360deg); }
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'primary-blue': '#1870b8',
+                        'accent-gold': '#fdc953',
+                        'neutral-white': '#ffffff',
+                    },
+                    boxShadow: {
+                        'custom-lg': '0 10px 15px -3px rgba(24, 112, 184, 0.1), 0 4px 6px -2px rgba(24, 112, 184, 0.05)',
+                    }
+                },
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Header / Navigation Bar -->
+    <header class="bg-primary-blue shadow-custom-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo and App Name -->
+                <a href="#" class="flex items-center space-x-2">
+                    <img src="https://placehold.co/48x48/ffffff/1870b8?text=RT"
+                         onerror="this.onerror=null; this.src='https://placehold.co/48x48/ffffff/1870b8?text=RT'"
+                         alt="Revision Test App Logo"
+                         class="w-12 h-12 p-1 bg-white object-contain shadow-lg rounded">
+                    <span class="text-2xl font-bold text-neutral-white tracking-tight">Revision Test</span>
+                </a>
+                
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#exams" class="text-neutral-white hover:text-accent-gold transition duration-300 font-medium">Exams</a>
+                    <a href="#quiz-generator" class="text-neutral-white hover:text-accent-gold transition duration-300 font-medium">Test Generator</a>
+                    <a href="#features" class="text-neutral-white hover:text-accent-gold transition duration-300 font-medium">Why Us?</a>
+                    <a href="#contact" class="text-neutral-white hover:text-accent-gold transition duration-300 font-medium">Contact</a>
+                </nav>
+                <button onclick="document.getElementById('quiz-generator').scrollIntoView({ behavior: 'smooth' });" class="bg-accent-gold text-primary-blue hover:bg-white hover:text-primary-blue transition duration-300 font-semibold py-2 px-6 rounded-full shadow-md hidden sm:block">
+                    Start Revision
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-20 md:py-32 bg-neutral-white shadow-inner">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-5xl md:text-6xl font-extrabold text-primary-blue leading-tight mb-4">
+                Revision is What Matters. Master Your Future.
+            </h1>
+            <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+                <span class="font-bold">Stop paying for content!</span> We provide the focused, adaptive testing platform necessary to ace India's toughest exams—from NEET to UPSC.
+            </p>
+            <button onclick="document.getElementById('quiz-generator').scrollIntoView({ behavior: 'smooth' });" class="inline-block bg-accent-gold text-primary-blue hover:bg-primary-blue hover:text-neutral-white transition duration-300 font-bold text-lg py-3 px-10 rounded-xl shadow-xl transform hover:scale-105">
+                Take Your First Test Today!
+            </button>
+            <p class="mt-4 text-sm text-gray-500">Free trial available for new users.</p>
+        </div>
+    </section>
+
+    <!-- Hero Banner CTA -->
+    <section class="bg-accent-gold py-12 md:py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-primary-blue mb-4 leading-tight">
+                Forget the Fee. Focus on Mastery.
+            </h2>
+            <p class="text-xl md:text-2xl font-semibold text-gray-800">
+                Content is Always Free.
+            </p>
+        </div>
+    </section>
+
+    <!-- Interactive Quiz Generator Section -->
+    <section id="quiz-generator" class="py-16 md:py-24 bg-gray-50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center text-primary-blue mb-12">
+                <span class="text-accent-gold">1.</span> Generate an Instant Practice Test
+            </h2>
+            
+            <!-- Quiz Input Form -->
+            <div class="bg-neutral-white p-6 md:p-10 rounded-xl shadow-custom-lg border-t-8 border-primary-blue">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
+                    <div class="md:col-span-2">
+                        <label for="topic" class="block text-sm font-medium text-gray-700 mb-1">Topic / Exam Name (e.g., 'Newton's Laws', 'Indian Geography for UPSC')</label>
+                        <input type="text" id="topic" value="Basic Organic Chemistry" placeholder="Enter your test topic" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue transition duration-200" required>
+                    </div>
+                    <div>
+                        <label for="num-questions" class="block text-sm font-medium text-gray-700 mb-1">Number of Questions</label>
+                        <select id="num-questions" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-primary-blue focus:border-primary-blue transition duration-200">
+                            <option value="3">3 Questions</option>
+                            <option value="5" selected>5 Questions</option>
+                            <option value="10">10 Questions</option>
+                        </select>
+                    </div>
+                    <div>
+                        <button onclick="generateQuiz()" id="generate-btn" class="w-full bg-primary-blue text-neutral-white hover:bg-accent-gold hover:text-primary-blue font-bold py-3 px-6 rounded-lg transition duration-300 shadow-lg transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
+                            Generate Quiz
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Output and Results Area -->
+            <div id="quiz-output" class="mt-12">
+                <!-- Loading indicator and Quiz results will be rendered here -->
+            </div>
+            
+            <!-- Result Summary Area -->
+            <div id="quiz-summary" class="mt-8 p-6 bg-primary-blue text-neutral-white rounded-xl shadow-2xl hidden">
+                <h3 class="text-2xl font-bold mb-2">Quiz Complete!</h3>
+                <p id="score-text" class="text-xl font-medium"></p>
+                <button onclick="document.getElementById('quiz-generator').scrollIntoView({ behavior: 'smooth' }); location.reload();" class="mt-4 bg-accent-gold text-primary-blue hover:bg-neutral-white font-semibold py-2 px-6 rounded-full transition duration-300">
+                    Start a New Test
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Exams Section (Original Content) -->
+    <section id="exams" class="py-16 md:py-24 bg-neutral-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center text-primary-blue mb-12">
+                <span class="text-accent-gold">2.</span> Exams We Cover
+            </h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <!-- NEET Card -->
+                <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-500 transform hover:-translate-y-1 border-t-4 border-primary-blue">
+                    <div class="text-4xl text-accent-gold mb-3">⚕️</div>
+                    <h3 class="text-2xl font-semibold text-primary-blue mb-2">NEET</h3>
+                    <p class="text-gray-600">The premier entrance examination for medical and dental courses in India.</p>
+                </div>
+
+                <!-- RRB NTPC Card -->
+                <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-500 transform hover:-translate-y-1 border-t-4 border-accent-gold">
+                    <div class="text-4xl text-primary-blue mb-3">🚂</div>
+                    <h3 class="text-2xl font-semibold text-primary-blue mb-2">RRB NTPC</h3>
+                    <p class="text-gray-600">Non-Technical Popular Categories exam for recruitment in Indian Railways.</p>
+                </div>
+
+                <!-- NCLEX Card -->
+                <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-500 transform hover:-translate-y-1 border-t-4 border-primary-blue">
+                    <div class="text-4xl text-accent-gold mb-3">🩺</div>
+                    <h3 class="text-2xl font-semibold text-primary-blue mb-2">NCLEX</h3>
+                    <p class="text-gray-600">National Council Licensure Examination for nurses seeking licensing in the US/Canada.</p>
+                </div>
+
+                <!-- SSC CGL Card -->
+                <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-500 transform hover:-translate-y-1 border-t-4 border-accent-gold">
+                    <div class="text-4xl text-primary-blue mb-3">🏛️</div>
+                    <h3 class="text-2xl font-semibold text-primary-blue mb-2">SSC CGL</h3>
+                    <p class="text-gray-600">Staff Selection Commission Combined Graduate Level Examination for government posts.</p>
+                </div>
+                
+                <!-- SSC CHSL Card -->
+                <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-500 transform hover:-translate-y-1 border-t-4 border-primary-blue">
+                    <div class="text-4xl text-accent-gold mb-3">🧑‍💼</div>
+                    <h3 class="text-2xl font-semibold text-primary-blue mb-2">SSC CHSL</h3>
+                    <p class="text-gray-600">Staff Selection Commission Combined Higher Secondary Level Examination.</p>
+                </div>
+
+                <!-- JEE Card -->
+                <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-500 transform hover:-translate-y-1 border-t-4 border-accent-gold">
+                    <div class="text-4xl text-primary-blue mb-3">🔬</div>
+                    <h3 class="text-2xl font-semibold text-primary-blue mb-2">JEE</h3>
+                    <p class="text-gray-600">Joint Entrance Examination for admission into Indian Institutes of Technology (IITs) and NITs.</p>
+                </div>
+
+                <!-- UPSC Card -->
+                <div class="bg-gray-50 p-6 rounded-xl shadow-lg hover:shadow-2xl transition duration-500 transform hover:-translate-y-1 border-t-4 border-primary-blue">
+                    <div class="text-4xl text-accent-gold mb-3">🇮🇳</div>
+                    <h3 class="text-2xl font-semibold text-primary-blue mb-2">UPSC</h3>
+                    <p class="text-gray-600">Union Public Service Commission, conducting examinations for Civil Services.</p>
+                </div>
+                
+                <!-- CTA Card -->
+                <div class="bg-primary-blue p-6 rounded-xl shadow-lg flex flex-col justify-center items-center text-center col-span-1 sm:col-span-2 lg:col-span-1 xl:col-span-1">
+                    <h3 class="text-2xl font-bold text-neutral-white mb-4">Ready to Test Your Knowledge?</h3>
+                    <p class="text-gray-200 mb-6">Choose your target exam and start revising now.</p>
+                    <button onclick="document.getElementById('quiz-generator').scrollIntoView({ behavior: 'smooth' });" class="bg-accent-gold text-primary-blue hover:bg-neutral-white hover:text-primary-blue transition duration-300 font-semibold py-3 px-8 rounded-full">
+                        Start Free Test
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section (Original Content) -->
+    <section id="features" class="py-16 md:py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-4xl font-bold text-center text-primary-blue mb-12">
+                <span class="text-accent-gold">3.</span> The Revision Test Advantage
+            </h2>
+            <div class="grid md:grid-cols-3 gap-10">
+                <!-- Adaptive Testing Card -->
+                <div class="text-center p-6 rounded-xl shadow-lg bg-neutral-white border border-gray-100 transform hover:scale-[1.02] transition duration-300">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-primary-blue rounded-full flex items-center justify-center text-neutral-white text-3xl font-bold">🧠</div>
+                    <h3 class="text-xl font-semibold text-primary-blue mb-2">Adaptive Testing</h3>
+                    <p class="text-gray-600">Our system adapts to your current skill level, focusing revision on your weakest subjects for maximum efficiency.</p>
+                </div>
+                
+                <!-- Free Content Card (Provocative) -->
+                <div class="text-center p-6 rounded-xl shadow-lg bg-neutral-white border border-gray-100 transform hover:scale-[1.02] transition duration-300">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-accent-gold rounded-full flex items-center justify-center text-primary-blue text-3xl font-bold">🆓</div>
+                    <h3 class="text-xl font-semibold text-primary-blue mb-2">Why Pay? Content is Always Free</h3>
+                    <p class="text-gray-600"><span class="font-bold">Stop paying for content.</span> Revisions are what truly matter. We provide the essential practice platform, not expensive, irrelevant subscriptions.</p>
+                </div>
+                
+                <!-- Exam-Specific Content Card -->
+                <div class="text-center p-6 rounded-xl shadow-lg bg-neutral-white border border-gray-100 transform hover:scale-[1.02] transition duration-300">
+                    <div class="w-16 h-16 mx-auto mb-4 bg-primary-blue rounded-full flex items-center justify-center text-neutral-white text-3xl font-bold">🎯</div>
+                    <h3 class="text-xl font-semibold text-primary-blue mb-2">Exam-Specific Content</h3>
+                    <p class="text-gray-600">Curated question banks for NEET, UPSC, JEE, and more, ensuring you study exactly what you need to pass.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer (Original Content) -->
+    <footer id="contact" class="bg-primary-blue py-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+                <!-- Branding -->
+                <div class="mb-6 md:mb-0">
+                    <span class="text-2xl font-bold text-neutral-white">Revision Test</span>
+                    <p class="text-gray-300 mt-2 text-sm">&copy; 2025 Revision Test. All rights reserved.</p>
+                </div>
+
+                <!-- Footer Links -->
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-300 hover:text-accent-gold transition duration-300 text-sm">Privacy Policy</a>
+                    <a href="#" class="text-gray-300 hover:text-accent-gold transition duration-300 text-sm">Terms of Service</a>
+                    <a href="#" class="text-gray-300 hover:text-accent-gold transition duration-300 text-sm">Support</a>
+                </div>
+            </div>
+            <div class="mt-8 pt-6 border-t border-primary-blue/30 text-center">
+                <p class="text-xs text-gray-400">Powered by Excellence in Education</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic for Quiz Generator -->
+    <script>
+        // Global state to track quiz progress
+        let quizData = [];
+        let score = 0;
+        let answeredQuestions = new Set();
+        const maxRetries = 3;
+        const baseDelay = 1000; // 1 second
+
+        // Gemini API Configuration
+        const apiKey = ""; // API key is provided by the environment
+        const model = "gemini-2.5-flash-preview-09-2025";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+        // JSON Schema for structured quiz output
+        const quizSchema = {
+            type: "ARRAY",
+            items: {
+                type: "OBJECT",
+                properties: {
+                    "questionText": { "type": "STRING", "description": "The main text of the multiple-choice question." },
+                    "options": {
+                        "type": "ARRAY",
+                        "items": { "type": "STRING" },
+                        "description": "An array of four possible answers for the question."
+                    },
+                    "correctAnswerIndex": { "type": "INTEGER", "description": "The 0-based index of the correct answer in the options array. Must be between 0 and 3." }
+                },
+                required: ["questionText", "options", "correctAnswerIndex"]
+            }
+        };
+
+        // Exponential Backoff Retry mechanism
+        const fetchWithRetry = async (url, options, retries = maxRetries) => {
+            for (let i = 0; i < retries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        if (response.status === 429 && i < retries - 1) {
+                            const delay = baseDelay * Math.pow(2, i) + Math.random() * 1000;
+                            await new Promise(resolve => setTimeout(resolve, delay));
+                            continue; // Retry
+                        }
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response;
+                } catch (error) {
+                    if (i === retries - 1) throw error;
+                    // Log error for debugging, but don't stop the loop
+                    console.error("Fetch failed, retrying...", error);
+                }
+            }
+        };
+
+        const generateQuiz = async () => {
+            const topic = document.getElementById('topic').value.trim();
+            const numQuestions = parseInt(document.getElementById('num-questions').value);
+            const outputDiv = document.getElementById('quiz-output');
+            const summaryDiv = document.getElementById('quiz-summary');
+            const generateBtn = document.getElementById('generate-btn');
+
+            if (!topic) {
+                outputDiv.innerHTML = '<p class="text-red-500 text-center font-semibold">Please enter a topic to generate a test!</p>';
+                return;
+            }
+
+            // Reset state and UI
+            quizData = [];
+            score = 0;
+            answeredQuestions.clear();
+            outputDiv.innerHTML = '';
+            summaryDiv.classList.add('hidden');
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = `
+                <div class="loading-spinner h-5 w-5 border-2 border-t-2 border-white rounded-full mx-auto"></div>
+                Generating Test...
+            `;
+            
+            outputDiv.innerHTML = `
+                <div class="text-center p-8 bg-neutral-white rounded-xl shadow-lg">
+                    <div class="loading-spinner h-8 w-8 border-4 border-t-4 border-primary-blue rounded-full mx-auto mb-3"></div>
+                    <p class="text-lg font-semibold text-primary-blue">Preparing your ${numQuestions}-question test on "${topic}"...</p>
+                    <p class="text-sm text-gray-500 mt-1">This may take a moment as the AI crafts your revision material.</p>
+                </div>
+            `;
+
+            const systemPrompt = "You are a world-class test generator for competitive Indian exams. Create multiple-choice questions (MCQs) that are relevant, challenging, and suitable for the specified topic. Output the questions ONLY in the requested JSON structure.";
+            const userQuery = `Generate ${numQuestions} multiple-choice questions about "${topic}" in the strict JSON format provided. Ensure all questions are single-best-answer MCQs with exactly 4 options.`;
+
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                },
+                generationConfig: {
+                    responseMimeType: "application/json",
+                    responseSchema: quizSchema,
+                    temperature: 0.5 // Keep it slightly creative but factual
+                }
+            };
+
+            try {
+                const response = await fetchWithRetry(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+                const jsonText = result.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                if (jsonText) {
+                    quizData = JSON.parse(jsonText);
+                    renderQuiz();
+                } else {
+                    throw new Error("API response was not formatted correctly or was empty.");
+                }
+
+            } catch (error) {
+                console.error("Error fetching quiz:", error);
+                outputDiv.innerHTML = `
+                    <div class="p-6 bg-red-100 border-l-4 border-red-500 text-red-700 rounded-lg">
+                        <p class="font-bold">Error generating quiz.</p>
+                        <p>Could not generate the test for "${topic}". Please try a different topic or refresh the page.</p>
+                    </div>
+                `;
+            } finally {
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = 'Generate Quiz';
+            }
+        };
+
+        const renderQuiz = () => {
+            const outputDiv = document.getElementById('quiz-output');
+            outputDiv.innerHTML = quizData.map((q, qIndex) => `
+                <div id="q-${qIndex}" class="question-card bg-neutral-white p-6 rounded-xl shadow-lg mb-6 border-l-4 border-accent-gold">
+                    <h4 class="text-xl font-bold text-primary-blue mb-4">Question ${qIndex + 1}: ${q.questionText}</h4>
+                    <div class="space-y-3">
+                        ${q.options.map((option, oIndex) => `
+                            <button 
+                                data-q-index="${qIndex}" 
+                                data-o-index="${oIndex}" 
+                                class="quiz-option block w-full text-left p-3 rounded-lg border border-gray-200 bg-gray-50 text-gray-700 transition duration-200"
+                                onclick="checkAnswer(${qIndex}, ${oIndex})"
+                                id="q${qIndex}-o${oIndex}"
+                            >
+                                ${String.fromCharCode(65 + oIndex)}. ${option}
+                            </button>
+                        `).join('')}
+                    </div>
+                    <div id="feedback-${qIndex}" class="mt-4 font-semibold text-sm hidden"></div>
+                </div>
+            `).join('');
+        };
+
+        const checkAnswer = (qIndex, selectedOIndex) => {
+            if (answeredQuestions.has(qIndex)) return;
+
+            const question = quizData[qIndex];
+            const correctOIndex = question.correctAnswerIndex;
+            const feedbackDiv = document.getElementById(`feedback-${qIndex}`);
+            const questionCard = document.getElementById(`q-${qIndex}`);
+
+            // Disable all options for this question
+            const options = questionCard.querySelectorAll('.quiz-option');
+            options.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.remove('hover:shadow-xl', 'cursor-pointer');
+            });
+
+            answeredQuestions.add(qIndex);
+
+            // Highlight selected and correct answers
+            const selectedBtn = document.getElementById(`q${qIndex}-o${selectedOIndex}`);
+            const correctBtn = document.getElementById(`q${qIndex}-o${correctOIndex}`);
+
+            if (selectedOIndex === correctOIndex) {
+                score++;
+                selectedBtn.classList.remove('bg-gray-50', 'text-gray-700');
+                selectedBtn.classList.add('bg-green-500', 'text-white', 'shadow-md', 'border-green-700');
+                feedbackDiv.innerHTML = '✅ Correct!';
+                feedbackDiv.classList.remove('text-red-500');
+                feedbackDiv.classList.add('text-green-600');
+            } else {
+                // Mark selected as wrong
+                selectedBtn.classList.remove('bg-gray-50', 'text-gray-700');
+                selectedBtn.classList.add('bg-red-500', 'text-white', 'shadow-md', 'border-red-700');
+                
+                // Mark correct answer
+                correctBtn.classList.remove('bg-gray-50', 'text-gray-700');
+                correctBtn.classList.add('bg-green-100', 'text-green-800', 'font-bold', 'border-green-500');
+
+                feedbackDiv.innerHTML = `❌ Incorrect. The correct answer was ${String.fromCharCode(65 + correctOIndex)}.`;
+                feedbackDiv.classList.remove('text-green-600');
+                feedbackDiv.classList.add('text-red-500');
+            }
+            
+            feedbackDiv.classList.remove('hidden');
+
+            // Check if quiz is finished
+            if (answeredQuestions.size === quizData.length) {
+                showSummary();
+            }
+        };
+
+        const showSummary = () => {
+            const total = quizData.length;
+            const summaryDiv = document.getElementById('quiz-summary');
+            const scoreText = document.getElementById('score-text');
+
+            scoreText.textContent = `You scored ${score} out of ${total} (${Math.round((score / total) * 100)}%).`;
+            summaryDiv.classList.remove('hidden');
+            summaryDiv.scrollIntoView({ behavior: 'smooth' });
+        };
+
+        // Initialize with a default example topic on load
+        window.onload = () => {
+            // Nothing to do here for now, the inputs are pre-filled.
+        };
+
+    </script>
+
+</body>
+</html>
